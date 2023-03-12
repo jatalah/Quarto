@@ -1,0 +1,199 @@
+---
+title: "Quarto: una herramienta para comunicar ciencia de datos"
+author: "Javier Atalah"
+affiliation: "Universidad de Alicante"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+format: 
+  revealjs:
+    logo: "logo-ua.webp"
+    preview-links: auto
+    slide-number: c/t
+    chalkboard: true
+    footer: "Taller de Quarto - Program de Doctorado en Ciencias del Mar, UA"
+  html:
+    code-fold: true
+---
+
+## Requisitos
+
+::: non-incremental
+*Este curso asume que:*
+
+-   Conoces RStudio y lo haz usado antes.
+-   Sabes un poco de Markdown.
+-   Quieres aprender sobre Quarto, la nueva generación de Markdown
+:::
+
+![](https://aulasvirtualesmendoza.com/cle/wp-content/uploads/2016/11/requisitos.png)
+
+## Mas requisitos
+
+1.  Instala la última versión de RStudio, v2022.071 o posterior.
+
+2.  Instala la última versión de Quarto (v1.0.36 o superior).
+
+3.  Los packetes que use en la presentacion
+
+```{r}
+#| echo: true
+#| eval: false
+pkg_list <- c(
+  "tidyverse", "sf", "mapView", "reticulate", "CopernicusMarine", "quarto", "palmerpenguins", "sjPlot"
+  )
+install.packages(pkg_list)
+```
+
+## Que es Quarto?
+
+Quarto es un sistema de publicación científica y técnica de código abierto basado en Pandoc.
+
+Permite mezclar texto y código para producir resultados con un formato elegante en documentos, páginas web, blogs, libros y más.
+
+![](https://quarto.org/quarto.png){width="54"}
+
+## Para que sirve Quarto
+
+-   Para comunicarse con otr\@s cientific\@s, gestor\@s, clientes, administrativ\@s o academic\@s que quieren centrarse en conclusiones, no en el código detrás del análisis.
+
+-   Para colaborar con otros científic\@s de datos que están interesad\@s ​​tanto en los resultados y conclusiones como en el código.
+
+-   Como un entorno en el que hacer ciencia de datos reproducible, como un cuaderno de laboratorio (*notebook*) moderno.
+
+## Ciencias de datos reproducible
+
+La capacidad de obtener resultados consistentes utilizando los mismos datos de entrada, pasos, métodos, código y condiciones de análisis.
+
+-   Garantizar que se pueda confiar en el trabajo científico
+
+-   Facilitar el proceso de colaboración y revisión
+
+-   Evitar la desinformación
+
+-   Evita la duplicación del trabajo
+
+-   Garantizar la continuidad
+
+## El sucesor de MarkDown
+
+![](https://www.jumpingrivers.com/blog/quarto-rmarkdown-comparison/featured.png){width="573"}
+
+Quarto es una versión de próxima generación y multilenguaje de R Markdown de RStudio, que incluye docenas de nuevas características y capacidades, mientras que al mismo tiempo puede "renderizar" la mayoría de los archivos Rmd existentes sin modificaciones.
+
+## Posit el nuevo RStudio
+
+-   RStudio is now Posit, our mission continues.
+
+-   Embracing R, Python and other programming languages.
+
+[Posit](https://posit.co/){preview-link="true"}
+
+## Poder de gigantes
+
+![](https://www.njtierney.com/post/2022/04/11/rmd-to-qmd/imgs/quarto-all.jpeg){fig-align="center"}
+
+## Instalación
+
+"Quarto" está incluido en la última versión de RStudio (v2022.07), lo cual permite crear, editar y ver documentos Quarto.
+
+Para descargar, visite: [Posit](https://posit.co/download/rstudio-desktop/){preview-link="true"} o
+
+[Rstudio](https://rstudio.com/products/rstudio/download/){preview-link="true"}
+
+## Creating Documents
+
+Use the **File :** **New File : Quarto Document...** command to create new Quarto documents:
+
+![](https://quarto.org/docs/tools/images/new-quarto-doc.png)
+
+## Hello Quarto
+
+![](https://quarto.org/docs/get-started/hello/images/rstudio-hello.png){fig-align="center"}
+
+## Rendering
+
+Utiliza el botón "Renderizar" en el IDE de RStudio para renderizar el archivo y previsualizar la salida con un solo clic o combinación de teclas (Ctrl) + Shift + K) o (⇧⌘K) .
+
+![](https://quarto.org/docs/get-started/hello/images/rstudio-render.png)
+
+## Rendering alternatives
+
+Alternativamente puedes usar:
+
+-   "Renderizar al guardar" en la barra de herramientas del editor.
+
+![](https://quarto.org/docs/get-started/hello/images/rstudio-render-on-save.png) - Renderizar desde la consola de R a través del paquete quarto:
+
+```{r}
+#| echo: true
+#| eval: false
+install.packages("quarto")
+quarto::quarto_render("hello.qmd")
+```
+
+## Autoring
+
+-   RStudio editor: visual (on the left) and source (on the right).
+
+Permite cambiar formato a **negrita**, *italics,* [underline,]{.underline} etc.
+
+![](https://quarto.org/docs/get-started/hello/images/rstudio-source-visual.png)
+
+## Listas
+
+## Código R
+
+La @fig-airquality que explora el efecto de la temperatura en los niveles de ozono.
+
+```{r}
+#| label: fig-airquality
+#| output-location: column
+#| fig-cap: Temperature and ozone level.
+#| warning: false
+#| echo: true
+
+library(ggplot2)
+ggplot(airquality, aes(Temp, Ozone)) + 
+  geom_point() + 
+  geom_smooth(method = "loess"
+)
+```
+
+## Código Phyton
+
+```{python}
+#| label: fig-polar
+#| cache: true
+#| echo: true
+#| output-location: column
+#| fig-cap: "A line plot on a polar axis"
+
+# !python -m pip install -U matplotlib
+import numpy as np
+import matplotlib.pyplot as plt
+
+r = np.arange(0, 2, 0.01)
+theta = 2 * np.pi * r
+fig, ax = plt.subplots(
+  subplot_kw = {'projection': 'polar'} 
+)
+ax.plot(theta, r)
+ax.set_rticks([0.5, 1, 1.5, 2])
+ax.grid(True)
+plt.show()
+```
+
+## Interactive widgets
+
+Interactive maps based on Copernicus satellite data download using `library(Copernicus Marine)`
+
+```{r}
+library(CopernicusMarine)
+leaflet::leaflet() %>%
+  leaflet::setView(lng = 3, lat = 54, zoom = 4) %>%
+  leaflet::addProviderTiles("Esri.WorldImagery") %>%
+  addCopernicusWMSTiles(
+    product     = "GLOBAL_ANALYSISFORECAST_PHY_001_024",
+    layer       = "cmems_mod_glo_phy-thetao_anfc_0.083deg_P1D-m",
+    variable    = "thetao"
+  )
+```

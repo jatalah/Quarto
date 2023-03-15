@@ -1,8 +1,9 @@
 ---
-title: "Quarto para comunicar ciencia de datos"
-author: "Javier Atalah"
-affiliation: "Universidad de Alicante"
-date: "16 de Marzo 2023"
+title: "Quarto y R Studio"
+subtitle: "Una herramienta para la comunicación effectiva de ciencias de datos"
+author:
+  - Dr. Javier Atalah
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 lang: es
 format: 
   revealjs:
@@ -17,7 +18,7 @@ format:
     code-overflow: wrap
     smaller: true
     scrollable: true
-    footer: "Taller de Quarto - Program de Doctorado en Ciencias del Mar, UA"
+    footer: "Programa de Doctorado en Ciencias del Mar"
   html:
     code-fold: show
     code-line-numbers: false
@@ -46,7 +47,7 @@ format:
 
 -   Permite mezclar texto y código para producir resultados con un formato elegante en documentos, páginas web, blogs, libros y más.
 
-    ![](https://posit.co/wp-content/uploads/2022/10/thumbnail-2.jpg){fig-align="center" width="319"}
+    ![](https://posit.co/wp-content/uploads/2022/10/thumbnail-2.jpg){fig-align="center" width="428"}
 
 ## Para que sirve Quarto
 
@@ -88,11 +89,11 @@ Cambia la extension del fichero Markdown de ".Rmd" a ".qmd" para convertir docum
 
 -   Embracing R, Python and other programming languages.
 
-![](https://posit.co/wp-content/themes/Posit/dist/images/site-share-image.jpg){fig-align="center" width="257"}
+![](https://posit.co/wp-content/themes/Posit/dist/images/site-share-image.jpg){fig-align="center" width="214"}
 
 ## Poder de gigantes
 
-![](https://www.njtierney.com/post/2022/04/11/rmd-to-qmd/imgs/quarto-all.jpeg){fig-align="center"}
+![](https://www.njtierney.com/post/2022/04/11/rmd-to-qmd/imgs/quarto-all.jpeg){fig-align="center" width="537"}
 
 ## Instalación
 
@@ -116,18 +117,9 @@ Para descargar, visite: [Posit](https://posit.co/download/rstudio-desktop/){prev
 #| echo: fenced
 #| eval: false
 pkg_list <- c(
-  "tidyverse",
-  "sf",
-  "leaflet",
-  "reticulate",
-  "CopernicusMarine",
-  "quarto",
-  "palmerpenguins",
-  "sjPlot",
-  "lme4"
+  "tidyverse", "sf", "leaflet", "reticulate", "CopernicusMarine", "palmerpenguins", "sjPlot", "lme4"
 )
 install.packages(pkg_list)
-
 ```
 
 ::: callout-note
@@ -258,6 +250,65 @@ format:
     fig-dpi: 300
 ```
 
+## Anatomia de un code chunk
+
+```{r}
+#| echo: fenced
+#| eval: false
+
+library(tidyverse)
+glimpse(mtcars)
+```
+
+-   Tiene tres backticks a cada lado
+
+-   Coloca el motor (r) entre llaves {r}.
+
+-   Coloca las opciones debajo, detrás del #\| (tubería de hash): #\| opción1: valor
+
+## Chunk de R
+
+La @fig-airquality que explora el efecto de la temperatura en los niveles de ozono.
+
+```{r}
+#| label: fig-airquality
+#| output-location: column
+#| fig-cap: Temperature and ozone level.
+#| warning: false
+#| echo: true
+#| 
+library(ggplot2) # loads the ggplot2 package
+ggplot(airquality, aes(Temp, Ozone)) + # creates a scatterplot of Temp and Ozone
+  geom_point() + # adds points to the scatterplot
+  geom_smooth(method = "loess") + # adds a loess line to the scatterplot
+  theme_minimal() + # changes the theme of the plot to minimal
+  labs(x = "Temperature") # changes the x-axis label to "Temperature"
+
+```
+
+## Chunk Phyton
+
+```{python}
+#| label: fig-polar
+#| cache: true
+#| echo: true
+#| output-location: column
+#| fig-cap: "A line plot on a polar axis"
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+r = np.arange(0, 2, 0.01)
+theta = 2 * np.pi * r
+fig, ax = plt.subplots(
+  subplot_kw = {'projection': 'polar'} 
+)
+ax.plot(theta, r)
+ax.set_rticks([0.5, 1, 1.5, 2])
+ax.grid(True)
+plt.show()
+```
+
 ## Ficheros HTML
 
 ``` yaml
@@ -328,87 +379,53 @@ format:
 
     -   `beamer` --- [Beamer](https://quarto.org/docs/presentations/beamer.html){preview-link="true"} (LaTeX/PDF)
 
-## Anatomia de un code chunk
+## Fondo de diapositivas {background="#43464B"}
 
-```{r}
-#| echo: fenced
-#| eval: false
+Establezca el atributo `background` en una diapositiva para cambiar el color de fondo (se admiten todos los formatos de color CSS).
 
-library(tidyverse)
-glimpse(mtcars)
-```
+Hay diferentes transiciones de fondo disponibles a través de la opción `background-transition`.
 
--   Tiene tres backticks a cada lado
+::: footer
+Learn more: [Slide Backgrounds](https://quarto.org/docs/presentations/revealjs/#color-backgrounds)
+:::
 
--   Coloca el motor (r) entre llaves {r}.
+## Media Backgrounds {background="#43464B" background-image="https://images.unsplash.com/photo-1538370965046-79c0d6907d47?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fG1pbGt5JTIwd2F5fGVufDB8fDB8fA%3D%3D&w=1000&q=80"}
 
--   Coloca las opciones debajo, detrás del #\| (tubería de hash): #\| opción1: valor
+Puedes también usar como fondo:
 
-## Chunk de R
+-   Una imagen: `background-image`
 
-La @fig-airquality que explora el efecto de la temperatura en los niveles de ozono.
+-   Un video: `background-video`
 
-```{r}
-#| label: fig-airquality
-#| output-location: column
-#| fig-cap: Temperature and ozone level.
-#| warning: false
-#| echo: true
-#| 
-library(ggplot2) # loads the ggplot2 package
-ggplot(airquality, aes(Temp, Ozone)) + # creates a scatterplot of Temp and Ozone
-  geom_point() + # adds points to the scatterplot
-  geom_smooth(method = "loess") + # adds a loess line to the scatterplot
-  theme_minimal() + # changes the theme of the plot to minimal
-  labs(x = "Temperature") # changes the x-axis label to "Temperature"
+-   An iframe: `background-iframe`
 
-```
+::: footer
+Learn more: [Media Backgrounds](https://quarto.org/docs/presentations/revealjs/#image-backgrounds)
+:::
 
-## Chunk Phyton
+## Listas incrementales
 
-```{python}
-#| label: fig-polar
-#| cache: true
-#| echo: true
-#| output-location: column
-#| fig-cap: "A line plot on a polar axis"
+Las listas pueden ser mostradas de manera incremental opcionalmente:
 
-import numpy as np
-import matplotlib.pyplot as plt
+::: incremental
+-   Primer ítem
+-   Segundo ítem
+-   Tercer ítem
+:::
 
-r = np.arange(0, 2, 0.01)
-theta = 2 * np.pi * r
-fig, ax = plt.subplots(
-  subplot_kw = {'projection': 'polar'} 
-)
-ax.plot(theta, r)
-ax.set_rticks([0.5, 1, 1.5, 2])
-ax.grid(True)
-plt.show()
-```
+. . .
 
-## Interactive widgets
+<br/> Inserta pausas para hacer que otros tipos de contenido se muestren de forma incremental.
 
-Interactive maps based on Copernicus satellite data download using `library(Copernicus Marine)`
-
-```{r}
-library(CopernicusMarine)
-
-leaflet::leaflet() %>%
-  leaflet::setView(lng = 3, lat = 54, zoom = 4) %>%
-  leaflet::addProviderTiles("Esri.WorldImagery") %>%
-  addCopernicusWMSTiles(
-    product     = "GLOBAL_ANALYSISFORECAST_PHY_001_024",
-    layer       = "cmems_mod_glo_phy-thetao_anfc_0.083deg_P1D-m",
-    variable    = "thetao"
-  )
-```
+::: footer
+Aprende mas: [Incremental Lists](https://quarto.org/docs/presentations/revealjs/#incremental-lists)
+:::
 
 ## Tablas
 
 Se pueden insertar col el editor visual.
 
-Table12. Fish abundance and biomass.
+Table 12. Fish abundance and biomass.
 
 | Species           | Abundance | Biomass |
 |-------------------|-----------|---------|
@@ -417,12 +434,29 @@ Table12. Fish abundance and biomass.
 
 ## Tablas knitr
 
+::: columns
+::: {.column width="35%"}
+#### Motor Trend Car Road Tests {transition="fade-in slide-out"}
+
+Los datos se extrajeron de la revista estadounidense Motor Trend de 1974 y comprenden el consumo de combustible y 10 aspectos del diseño y rendimiento del automóvil para 32 automóviles.
+:::
+
+::: {.column width="3%"}
+:::
+
+::: {.column width="62%"}
 ```{r}
-#| label: tbl-tabla_knitr
-#| echo: true
-#| tbl-cap: "Fish abundance and biomass."
-head(mtcars) %>% knitr::kable(digits = 1)
+#| label: tbl-cars
+#| echo: false
+#| tbl-cap: "Consumo de combustible y 10 aspectos del diseño y rendimiento de  automóviles."
+knitr::kable(head(mtcars)[,c("mpg",	"cyl", "disp", "hp", "wt")])
 ```
+:::
+:::
+
+::: footer
+Aprende más: [Multiple Columns](https://quarto.org/docs/presentations/revealjs/#multiple-columns)
+:::
 
 ## Tablas modelos estadísticos
 
@@ -449,68 +483,71 @@ library(DT)
 datatable(iris)
 ```
 
-## Tabsets
+## Tabsets {.smaller .scrollable transition="slide"}
 
 ::: panel-tabset
-## Code
+### Plot
 
 ```{r}
-#| echo: fenced
-#| eval: false
-head(mtcars)
+library(ggplot2)
+ggplot(mtcars, aes(hp, mpg, color = am)) +
+  geom_point() +
+  geom_smooth(formula = y ~ x, method = "loess") +
+  theme_minimal(base_size = 18)
 ```
 
-## Output
+### Data
 
 ```{r}
-#| eval: true
-#| echo: false
-head(mtcars)
+knitr::kable(mtcars)
 ```
 :::
 
-    ::: {.panel-tabset}
-    ## Code
-    ```{{r}}
-    #| echo: fenced
-    #| eval: false
-    head(mtcars)
-    ```
+::: footer
+Aprende más: [Tabsets](https://quarto.org/docs/presentations/revealjs/#tabsets)
+:::
 
+## LaTeX Equations
 
-    ## Output
-    ```{{r}}
-    #| eval: true
-    #| echo: false
-    head(mtcars)
-    ```
-    :::
+[MathJax](https://www.mathjax.org/) renderizando ecuaciones a HTML
 
-## Graficas interactivas con plotly
-
-```{r}
-#| fig-cap: "Data pinguinos"
-library(plotly)
-
-ggpenguins <-
-  ggplot(palmerpenguins::penguins,
-         aes(bill_length_mm , body_mass_g, color = species)) +
-  geom_smooth(method = lm) +
-  geom_point() +
-  theme_minimal()
-
-ggplotly(ggpenguins)
+::: columns
+::: {.column width="40%"}
+``` tex
+\begin{gather*}
+a_1=b_1+c_1\\
+a_2=b_2+c_2-d_2+e_2
+\end{gather*}
+\begin{align}
+a_{11}& =b_{11}&
+  a_{12}& =b_{12}\\
+a_{21}& =b_{21}&
+  a_{22}& =b_{22}+c_{22}
+\end{align}
 ```
+:::
 
-## Ecuaciones
+::: {.column width="60%"}
+```{=tex}
+\begin{gather*}
+a_1=b_1+c_1\\
+a_2=b_2+c_2-d_2+e_2
+\end{gather*}
+```
+```{=tex}
+\begin{align}
+a_{11}& =b_{11}&
+  a_{12}& =b_{12}\\
+a_{21}& =b_{21}&
+  a_{22}& =b_{22}+c_{22}
+\end{align}
+```
+:::
+:::
 
--   Si estás usando el modo editor visual, puedes agregar ecuaciones "Insertar cualquier cosa" (Insert Anything) escribiendo "/"
-
-![](https://quarto.org/docs/get-started/authoring/images/rstudio-insert-equation.png){width="476"}
-
--   Las ecuaciones de visualización (en una nueva línea) se delimitan con \$\$ \... \$\$ mientras que las ecuaciones en línea se delimitan con \$ \... \$.
-
-    ![](https://quarto.org/docs/get-started/authoring/images/rstudio-equation-render.png)
+::: footer
+Learn more: [LaTeX Equations](https://quarto.org/docs/authoring/markdown-basics.html#equations)
+:::
 
 ## Referencias
 
@@ -537,6 +574,41 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 lang: es
 bibliography: references.bib
 biblio-title: "Referencias"
+```
+
+## Gráficas interactivas con plotly {transition="slide"}
+
+```{r}
+#| label: fig-penguins
+#| fig-cap: "Scatterplot datos pinguinos"
+#| 
+library(plotly)
+
+ggpenguins <-
+  ggplot(palmerpenguins::penguins,
+         aes(bill_length_mm , body_mass_g, color = species)) +
+  geom_smooth(method = lm) +
+  geom_point() +
+  theme_minimal()
+
+ggplotly(ggpenguins)
+```
+
+## Interactive widgets
+
+Interactive maps based on Copernicus satellite data download using `library(Copernicus Marine)`
+
+```{r}
+library(CopernicusMarine)
+
+leaflet::leaflet() %>%
+  leaflet::setView(lng = 3, lat = 54, zoom = 4) %>%
+  leaflet::addProviderTiles("Esri.WorldImagery") %>%
+  addCopernicusWMSTiles(
+    product     = "GLOBAL_ANALYSISFORECAST_PHY_001_024",
+    layer       = "cmems_mod_glo_phy-thetao_anfc_0.083deg_P1D-m",
+    variable    = "thetao"
+  )
 ```
 
 ## Publicaciones
@@ -584,9 +656,7 @@ Algunos ejemplos:
 
 {{<https://raw.githubusercontent.com/MichelNivard/gptstudio/main/media/comments.gif>}}
 
-## Fin!
-
-Puedes leer todos los documentos <https://quarto.org/docs/guide/>
+## Gracias! {background="#43464B" background-image="https://media.istockphoto.com/id/166446682/photo/stormy-sea.jpg?s=612x612&w=0&k=20&c=cfQziQiyUOVh6mr3fKYA2nslfuNQ_JRLR0pJJtvvPEA="}
 
 ### Documentos
 

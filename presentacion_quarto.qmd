@@ -1,0 +1,604 @@
+---
+title: "Quarto para comunicar ciencia de datos"
+author: "Javier Atalah"
+affiliation: "Universidad de Alicante"
+date: "16 de Marzo 2023"
+lang: es
+format: 
+  revealjs:
+    logo: "https://web.ua.es/secciones-ua/images/layout/logo-ua.jpg"
+    theme: sky
+    incremental: false
+    preview-links: auto 
+    slide-number: c/t
+    chalkboard: true
+    code-fold: show
+    code-line-numbers: false
+    code-overflow: wrap
+    smaller: true
+    scrollable: true
+    footer: "Taller de Quarto - Program de Doctorado en Ciencias del Mar, UA"
+  html:
+    code-fold: show
+    code-line-numbers: false
+    code-overflow: wrap
+---
+
+## Requisitos
+
+::: columns
+::: {.column width="70%"}
+*Este curso asume que:*
+
+-   Conoces RStudio y lo haz usado antes.
+-   Sabes un poco de Markdown.
+-   Quieres aprender sobre Quarto, la nueva generación de Markdown
+:::
+
+::: {.column width="30%"}
+![](https://aulasvirtualesmendoza.com/cle/wp-content/uploads/2016/11/requisitos.png){fig-align="right" width="184"}
+:::
+:::
+
+## ¿Qué es Quarto?
+
+-   Quarto es un sistema de publicación científica y técnica de código abierto basado en Pandoc.
+
+-   Permite mezclar texto y código para producir resultados con un formato elegante en documentos, páginas web, blogs, libros y más.
+
+    ![](https://posit.co/wp-content/uploads/2022/10/thumbnail-2.jpg){fig-align="center" width="319"}
+
+## Para que sirve Quarto
+
+-   Para comunicarse con otr\@s cientific\@s, gestor\@s, clientes, administrativ\@s o academic\@s que quieren centrarse en conclusiones, no en el código detrás del análisis.
+
+-   Para colaborar con otros científic\@s de datos que están interesad\@s tanto en los resultados y conclusiones como en el código.
+
+-   Como un entorno en el que hacer ciencia de datos reproducible, como un cuaderno de laboratorio (*notebook*) moderno.
+
+## Ciencias de datos reproducible
+
+La capacidad de obtener resultados consistentes utilizando los mismos datos de entrada, pasos, métodos, código y condiciones de análisis.
+
+-   Garantizar que se pueda confiar en el trabajo científico
+
+-   Facilitar el proceso de colaboración y revisión
+
+-   Evitar la desinformación
+
+-   Evita la duplicación del trabajo
+
+-   Garantizar la continuidad
+
+## El sucesor de MarkDown
+
+-   Quarto es una versión de próxima generación y multilenguaje de R Markdown de RStudio.
+
+-   Puede "renderizar" la mayoría de los archivos Rmd existentes sin modificaciones.
+
+![](https://www.jumpingrivers.com/blog/quarto-rmarkdown-comparison/featured.png){fig-align="center" width="253"}
+
+::: callout-tip
+Cambia la extension del fichero Markdown de ".Rmd" a ".qmd" para convertir documento.
+:::
+
+## Posit el nuevo RStudio
+
+-   RStudio is now [Posit](https://posit.co/){preview-link="true"}, our mission continues.
+
+-   Embracing R, Python and other programming languages.
+
+![](https://posit.co/wp-content/themes/Posit/dist/images/site-share-image.jpg){fig-align="center" width="257"}
+
+## Poder de gigantes
+
+![](https://www.njtierney.com/post/2022/04/11/rmd-to-qmd/imgs/quarto-all.jpeg){fig-align="center"}
+
+## Instalación
+
+"Quarto" está incluido en la última versión de RStudio (v2022.07), lo cual permite crear, editar y ver documentos Quarto.
+
+Para descargar, visite: [Posit](https://posit.co/download/rstudio-desktop/){preview-link="true"} o [Rstudio](https://rstudio.com/products/rstudio/download/){preview-link="true"}
+
+![](https://posit.co/wp-content/themes/Posit/dist/images/site-share-image.jpg){fig-align="center" width="187"}
+
+## Requisitos software
+
+::: incremental
+1.  Instala la última versión de RStudio, v2022.071 o posterior.
+
+2.  Instala la última versión de Quarto (v1.0.36 o posterior).
+
+3.  Las librerias utilizadas en la presentacion.
+:::
+
+```{r}
+#| echo: fenced
+#| eval: false
+pkg_list <- c(
+  "tidyverse",
+  "sf",
+  "leaflet",
+  "reticulate",
+  "CopernicusMarine",
+  "quarto",
+  "palmerpenguins",
+  "sjPlot",
+  "lme4"
+)
+install.packages(pkg_list)
+
+```
+
+::: callout-note
+El material del curso esta disponible en <https://github.com/jatalah/Quarto.git>
+:::
+
+## Interfaz de R a Python usando Reticulate
+
+-   El paquete reticulate proporciona una interfaz R para módulos, clases y funciones de Python.
+
+<https://rstudio.github.io/reticulate/>
+
+-   El primer paso es instalar Python a traves de por ejemplo Anaconda. <https://www.anaconda.com/products/distribution>
+
+-   Luego instalar el paquete reticulate desde CRAN usando `install.packages('reticulate')`
+
+![](https://rstudio.github.io/reticulate/reference/figures/reticulated_python.png){width="291"}
+
+```{python}
+#| echo: fenced
+#| eval: false
+!python -m pip install -U matplotlib
+```
+
+## Como clonar un Github repo
+
+::: {.callout-tip appearance="simple"}
+Navega a <https://github.com/jatalah/Quarto.git>
+
+1.  Presiona el boton verde "Code" y copia el url bajo las pestana HTTPS <https://github.com/jatalah/Quarto.git>
+
+2.  En RStudio, usa File \> New Project \> Version Control \> From Git \> y luego copia el URL en source repo box y luego enter.
+:::
+
+## Creating Documents
+
+Use the **File :** **New File : Quarto Document...** command to create new Quarto documents:
+
+![](https://quarto.org/docs/tools/images/new-quarto-doc.png)
+
+## Hello Quarto
+
+![](https://quarto.org/docs/get-started/hello/images/rstudio-hello.png){fig-align="center"}
+
+## Rendering
+
+Utiliza el botón "Renderizar" en el IDE de RStudio para renderizar el archivo y previsualizar la salida con un solo clic o combinación de teclas (Ctrl) + Shift + K) o (⇧⌘K) .
+
+![](https://quarto.org/docs/get-started/hello/images/rstudio-render.png)
+
+## Rendering alternatives
+
+Alternativamente puedes usar:
+
+-   "Renderizar al guardar" en la barra de herramientas del editor.
+
+![](https://quarto.org/docs/get-started/hello/images/rstudio-render-on-save.png) - Renderizar desde la consola de R a través del paquete quarto:
+
+```{r}
+#| echo: true
+#| eval: false
+install.packages("quarto")
+quarto::quarto_render("hello.qmd")
+```
+
+## Autoring
+
+-   RStudio editor: visual (on the left) and source (on the right).
+
+![](https://quarto.org/docs/get-started/hello/images/rstudio-source-visual.png){fig-align="center"}
+
+## Quarto - Visual Editor
+
+Están disponibles comandos adicionales en los menús de Formato, Insertar y Tabla:
+
+![](https://quarto.org/docs/visual-editor/images/visual-editing-toolbar.png){fig-alt="A snippet of an RStudio window showing the options bar at the top of an RMarkdown document."}
+
+| Format                                                                                                                                 | Insert                                                                                                                                 | Table                                                                                                                                |
+|------------------------|------------------------|------------------------|
+| ![](https://quarto.org/docs/visual-editor/images/visual-editing-format-menu.png){fig-alt="The contents of the Format drop down menu."} | ![](https://quarto.org/docs/visual-editor/images/visual-editing-insert-menu.png){fig0alt="The contents of the Insert drop down menu."} | ![](https://quarto.org/docs/visual-editor/images/visual-editing-table-menu.png){fig-alt="The contents of the Table drop down menu."} |
+
+## YAML header
+
+-   Un YAML header (encabezado YAML) es una sección de metadatos que se encuentra al comienzo de un archivo YAML, como Quarto.
+
+-   Esta delimitado por tres guiones (\-\--) al principio y al final.
+
+``` yaml
+title: "Hello, Quarto"
+format: html
+date: 15-03-2023
+editor: visual
+```
+
+## YAML header formato mixto
+
+``` yaml
+title: "Informe DeepFish2: análisis de datos"
+author:
+  - name: Javier Atalah 
+    url: https://scholar.google.co.nz/citations?user=DsgqR_oAAAAJ&hl=es
+    affiliation: Departamento de Ciencias del Mar y Biología Aplicada, Universidad de Alicante
+    affiliation-url: https://dcmba.ua.es/
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+editor: visual
+lang: es
+bibliography: references.bib
+biblio-title: "Referencias"
+execute:
+  warning: false
+  cache: true
+format:
+  html:
+    toc: true
+    echo: false
+    number-sections: true
+    toc-location: left
+    fig-dpi: 300
+    self-contained: true
+  docx:
+    toc: true
+    echo: false
+    cache: false
+    number-sections: true
+    fig-width: 7
+    fig-height: 5
+    fig-align: center
+    fig-dpi: 300
+```
+
+## Ficheros HTML
+
+``` yaml
+format:
+  html:
+    echo: false
+    toc: true
+    number-sections: true
+    toc-location: left
+```
+
+-   Son los más comúnmente utilizados y se pueden visualizar en cualquier navegador (por ejemplo, Chrome, Safari, Edge).
+
+-   Por ejemplo [Tendencias en SST en la costa valenciana](http://rpubs.com/javivi77/modesta_espacial){preview-link="true"}
+
+## Articulos PDF
+
+``` yaml
+format:
+  pdf:
+    template: mytemplate.tex
+```
+
+Ver detalles de Journal Articles en <https://github.com/quarto-journals/>
+
+::: columns
+::: {.column .fragment width="35%"}
+``` yaml
+----
+title: "My Document"
+toc: true
+format:
+   acm-pdf: default
+   acm-html: default
+---
+```
+:::
+
+::: {.column .fragment width="60%"}
+![](https://thomasmock.quarto.pub/reports-presentations/images/jss.png)
+:::
+:::
+
+## Documentos Word
+
+Si deseas personalizar la apariencia del resultado de MS Word, Pandoc admite Word templates.
+
+Aquí hay un ejemplo de cómo especificar un documento de referencia personalizado para docx:
+
+``` yaml
+format:
+  docx:
+    toc: true
+    echo: false
+    cache: false
+     reference-doc: custom-reference-doc.docx
+```
+
+![](https://quarto.org/docs/output-formats/images/word-styles.png){fig-align="center"}
+
+## Presentaciones
+
+-   Quarto supports a variety of formats for creating presentations, including:
+
+    -   `revealjs` --- [reveal.js](https://quarto.org/docs/presentations/revealjs/){preview-link="true"} (HTML)
+
+    -   `pptx` --- [PowerPoint](https://quarto.org/docs/presentations/powerpoint.html){preview-link="true"} (MS Office)
+
+    -   `beamer` --- [Beamer](https://quarto.org/docs/presentations/beamer.html){preview-link="true"} (LaTeX/PDF)
+
+## Anatomia de un code chunk
+
+```{r}
+#| echo: fenced
+#| eval: false
+
+library(tidyverse)
+glimpse(mtcars)
+```
+
+-   Tiene tres backticks a cada lado
+
+-   Coloca el motor (r) entre llaves {r}.
+
+-   Coloca las opciones debajo, detrás del #\| (tubería de hash): #\| opción1: valor
+
+## Chunk de R
+
+La @fig-airquality que explora el efecto de la temperatura en los niveles de ozono.
+
+```{r}
+#| label: fig-airquality
+#| output-location: column
+#| fig-cap: Temperature and ozone level.
+#| warning: false
+#| echo: true
+#| 
+library(ggplot2) # loads the ggplot2 package
+ggplot(airquality, aes(Temp, Ozone)) + # creates a scatterplot of Temp and Ozone
+  geom_point() + # adds points to the scatterplot
+  geom_smooth(method = "loess") + # adds a loess line to the scatterplot
+  theme_minimal() + # changes the theme of the plot to minimal
+  labs(x = "Temperature") # changes the x-axis label to "Temperature"
+
+```
+
+## Chunk Phyton
+
+```{python}
+#| label: fig-polar
+#| cache: true
+#| echo: true
+#| output-location: column
+#| fig-cap: "A line plot on a polar axis"
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+r = np.arange(0, 2, 0.01)
+theta = 2 * np.pi * r
+fig, ax = plt.subplots(
+  subplot_kw = {'projection': 'polar'} 
+)
+ax.plot(theta, r)
+ax.set_rticks([0.5, 1, 1.5, 2])
+ax.grid(True)
+plt.show()
+```
+
+## Interactive widgets
+
+Interactive maps based on Copernicus satellite data download using `library(Copernicus Marine)`
+
+```{r}
+library(CopernicusMarine)
+
+leaflet::leaflet() %>%
+  leaflet::setView(lng = 3, lat = 54, zoom = 4) %>%
+  leaflet::addProviderTiles("Esri.WorldImagery") %>%
+  addCopernicusWMSTiles(
+    product     = "GLOBAL_ANALYSISFORECAST_PHY_001_024",
+    layer       = "cmems_mod_glo_phy-thetao_anfc_0.083deg_P1D-m",
+    variable    = "thetao"
+  )
+```
+
+## Tablas
+
+Se pueden insertar col el editor visual.
+
+Table12. Fish abundance and biomass.
+
+| Species           | Abundance | Biomass |
+|-------------------|-----------|---------|
+| *Pagrus pagrus*   | 12        | 2400    |
+| *Serranus scriba* | 16        | 6500    |
+
+## Tablas knitr
+
+```{r}
+#| label: tbl-tabla_knitr
+#| echo: true
+#| tbl-cap: "Fish abundance and biomass."
+head(mtcars) %>% knitr::kable(digits = 1)
+```
+
+## Tablas modelos estadísticos
+
+La @tbl-sjplot muestra un ejemplo de un model linear mixto usando `library(sjPlot)` .
+
+```{r}
+#| label: tbl-sjplot
+#| echo: true
+#| tbl-cap: "Summary results of the linear mixed model analysing the sleep study data."
+
+library(sjPlot)
+library(lme4)
+fm1 <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
+tab_model(fm1)
+```
+
+## Tablas interactivas con DT
+
+```{r}
+#| label: tbl-dt
+#| echo: true
+#| tbl-cap: "All iris data"
+library(DT)
+datatable(iris)
+```
+
+## Tabsets
+
+::: panel-tabset
+## Code
+
+```{r}
+#| echo: fenced
+#| eval: false
+head(mtcars)
+```
+
+## Output
+
+```{r}
+#| eval: true
+#| echo: false
+head(mtcars)
+```
+:::
+
+    ::: {.panel-tabset}
+    ## Code
+    ```{{r}}
+    #| echo: fenced
+    #| eval: false
+    head(mtcars)
+    ```
+
+
+    ## Output
+    ```{{r}}
+    #| eval: true
+    #| echo: false
+    head(mtcars)
+    ```
+    :::
+
+## Graficas interactivas con plotly
+
+```{r}
+#| fig-cap: "Data pinguinos"
+library(plotly)
+
+ggpenguins <-
+  ggplot(palmerpenguins::penguins,
+         aes(bill_length_mm , body_mass_g, color = species)) +
+  geom_smooth(method = lm) +
+  geom_point() +
+  theme_minimal()
+
+ggplotly(ggpenguins)
+```
+
+## Ecuaciones
+
+-   Si estás usando el modo editor visual, puedes agregar ecuaciones "Insertar cualquier cosa" (Insert Anything) escribiendo "/"
+
+![](https://quarto.org/docs/get-started/authoring/images/rstudio-insert-equation.png){width="476"}
+
+-   Las ecuaciones de visualización (en una nueva línea) se delimitan con \$\$ \... \$\$ mientras que las ecuaciones en línea se delimitan con \$ \... \$.
+
+    ![](https://quarto.org/docs/get-started/authoring/images/rstudio-equation-render.png)
+
+## Referencias
+
+-   Quarto utiliza la representación estándar de markdown para las citas (por ejemplo, \[\@citation\])
+
+-   Las citas van dentro de corchetes y se separan por punto y coma.
+
+-   Se pueden insertar usando el modo editor visual
+
+    ![](https://quarto.org/docs/visual-editor/images/visual-editing-citation-insert-doi.png){width="640"}
+
+## Referencias formato bib
+
+-   Usando una fuente de datos bibliográficos, por ejemplo, un archivo BibLaTeX (.bib) o BibTeX (.bibtex).
+
+``` yalm
+title: "Informe DeepFish2: análisis de datos"
+author:
+  - name: Javier Atalah 
+    url: https://scholar.google.co.nz/citations?user=DsgqR_oAAAAJ&hl=es
+    affiliation: Departamento de Ciencias del Mar y Biología Aplicada, Universidad de Alicante
+    affiliation-url: https://dcmba.ua.es/
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+lang: es
+bibliography: references.bib
+biblio-title: "Referencias"
+```
+
+## Publicaciones
+
+Los documentos Quarto se pueden subir facilmenet a la red para compartir.
+
+-   **Rpubs**: facil con le boton de Publish en RStudio o usando `quarto::quarto_publish_doc()`
+
+-   **Quarto Pubs**: nueva plataforma. Utiliza el **Terminal**
+
+    Quarto publish Quarto pub document.Qmd
+
+-   **RStudio connect**
+
+`rsconnect::connectUser()`
+
+-   **GitHub**
+
+`usethis::use_git()`
+
+`usethis::use_github()`
+
+## Algunos ejemplos
+
+-   [Tutorial de Copernius en R](https://rstudio-pubs-static.s3.amazonaws.com/960854_42d06a9ab7c740f78b381b22531ecc5c.html){preview-link="true"}
+
+-   [Informe proyecto DeepFish2](https://rstudio-pubs-static.s3.amazonaws.com/941637_96b04626286d4a569e7d5556775eee06.html){preview-link="true"}
+
+-   [Cuadro de mando DeepFish2](https://cawthron.shinyapps.io/DeepFish2/){preview-link="true"}
+
+-   [Escape massive de peces por sabotaje](https://rstudio-pubs-static.s3.amazonaws.com/974147_89897aac6f2c42fe9d1e7c14282c83bc.html){preview-link="true"}
+
+-   [Tendencias en SST en la costa Valenciana](http://rpubs.com/javivi77/modesta_espacial){preview-link="true"}
+
+## Chat GPT
+
+La revolución de ChatGPT y OpenAI está en Rstudio y Quarto.
+
+    require(devtools)
+    install_github("MichelNivard/gptstudio")
+
+Algunos ejemplos:
+
+{{<https://raw.githubusercontent.com/MichelNivard/gptstudio/main/media/prompt_code.gif>}}
+
+{{<https://raw.githubusercontent.com/MichelNivard/gptstudio/main/media/comments.gif>}}
+
+## Fin!
+
+Puedes leer todos los documentos <https://quarto.org/docs/guide/>
+
+### Documentos
+
+-   [Quarto docs: Documents](https://quarto.org/docs/output-formats/html-basics.html)
+-   [Quarto Gallery: Articles + Reports](https://quarto.org/docs/gallery/#articles-reports)
+-   [Quarto Journal Articles](https://quarto.org/docs/journals/index.html)
+-   "Quarto titlepages": <https://nmfs-opensci.github.io/quarto_titlepages/>
+
+### Presentaciones
+
+-   [Quarto docs: Presentations](https://quarto.org/docs/presentations/)
+-   [Quarto Gallery: Presentations](https://quarto.org/docs/gallery/#presentations)
+-   Emil Hvitfeldt's [Slidecraft 101: Colors and Fonts](https://www.emilhvitfeldt.com/post/slidecraft-colors-fonts/)
+-   Meghan Hall's [Quarto Slides](https://meghan.rbind.io/blog/quarto-slides/)
+-   Andrew Heiss' Quarto slides on [APIs and webscraping with R](https://github.com/andrewheiss/2022-seacen)
